@@ -1,0 +1,238 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jonas Witt <mail@jonaswitt.com>
+Date: Fri Feb 18 19:23:40 2022 +0100
+Subject: enable_hevc.patch
+
+    enable hevc
+
+diff --git a/chromium/config/Chrome/mac/x64/config.asm b/chromium/config/Chrome/mac/x64/config.asm
+index 898125bfcb..e8da5794e9 100644
+--- a/chromium/config/Chrome/mac/x64/config.asm
++++ b/chromium/config/Chrome/mac/x64/config.asm
+@@ -808,7 +808,7 @@
+ %define CONFIG_H264_QSV_DECODER 0
+ %define CONFIG_H264_RKMPP_DECODER 0
+ %define CONFIG_HAP_DECODER 0
+-%define CONFIG_HEVC_DECODER 0
++%define CONFIG_HEVC_DECODER 1
+ %define CONFIG_HEVC_QSV_DECODER 0
+ %define CONFIG_HEVC_RKMPP_DECODER 0
+ %define CONFIG_HEVC_V4L2M2M_DECODER 0
+@@ -1563,7 +1563,7 @@
+ %define CONFIG_H261_PARSER 0
+ %define CONFIG_H263_PARSER 0
+ %define CONFIG_H264_PARSER 1
+-%define CONFIG_HEVC_PARSER 0
++%define CONFIG_HEVC_PARSER 1
+ %define CONFIG_JPEG2000_PARSER 0
+ %define CONFIG_MJPEG_PARSER 0
+ %define CONFIG_MLP_PARSER 0
+@@ -2183,7 +2183,7 @@
+ %define CONFIG_H264_DEMUXER 0
+ %define CONFIG_HCA_DEMUXER 0
+ %define CONFIG_HCOM_DEMUXER 0
+-%define CONFIG_HEVC_DEMUXER 0
++%define CONFIG_HEVC_DEMUXER 1
+ %define CONFIG_HLS_DEMUXER 0
+ %define CONFIG_HNM_DEMUXER 0
+ %define CONFIG_ICO_DEMUXER 0
+diff --git a/chromium/config/Chrome/mac/x64/config.h b/chromium/config/Chrome/mac/x64/config.h
+index eca3cdfdfd..701b11a2e3 100644
+--- a/chromium/config/Chrome/mac/x64/config.h
++++ b/chromium/config/Chrome/mac/x64/config.h
+@@ -823,7 +823,7 @@
+ #define CONFIG_H264_QSV_DECODER 0
+ #define CONFIG_H264_RKMPP_DECODER 0
+ #define CONFIG_HAP_DECODER 0
+-#define CONFIG_HEVC_DECODER 0
++#define CONFIG_HEVC_DECODER 1
+ #define CONFIG_HEVC_QSV_DECODER 0
+ #define CONFIG_HEVC_RKMPP_DECODER 0
+ #define CONFIG_HEVC_V4L2M2M_DECODER 0
+@@ -1578,7 +1578,7 @@
+ #define CONFIG_H261_PARSER 0
+ #define CONFIG_H263_PARSER 0
+ #define CONFIG_H264_PARSER 1
+-#define CONFIG_HEVC_PARSER 0
++#define CONFIG_HEVC_PARSER 1
+ #define CONFIG_JPEG2000_PARSER 0
+ #define CONFIG_MJPEG_PARSER 0
+ #define CONFIG_MLP_PARSER 0
+@@ -2198,7 +2198,7 @@
+ #define CONFIG_H264_DEMUXER 0
+ #define CONFIG_HCA_DEMUXER 0
+ #define CONFIG_HCOM_DEMUXER 0
+-#define CONFIG_HEVC_DEMUXER 0
++#define CONFIG_HEVC_DEMUXER 1
+ #define CONFIG_HLS_DEMUXER 0
+ #define CONFIG_HNM_DEMUXER 0
+ #define CONFIG_ICO_DEMUXER 0
+diff --git a/chromium/config/Chrome/mac/x64/libavcodec/codec_list.c b/chromium/config/Chrome/mac/x64/libavcodec/codec_list.c
+index 49f757b2d8..c16f588c2a 100644
+--- a/chromium/config/Chrome/mac/x64/libavcodec/codec_list.c
++++ b/chromium/config/Chrome/mac/x64/libavcodec/codec_list.c
+@@ -1,5 +1,6 @@
+ static const AVCodec * const codec_list[] = {
+     &ff_h264_decoder,
++    &ff_hevc_decoder,
+     &ff_theora_decoder,
+     &ff_vp3_decoder,
+     &ff_vp8_decoder,
+diff --git a/chromium/config/Chrome/mac/x64/libavcodec/parser_list.c b/chromium/config/Chrome/mac/x64/libavcodec/parser_list.c
+index 50acddb28e..192a64d7ab 100644
+--- a/chromium/config/Chrome/mac/x64/libavcodec/parser_list.c
++++ b/chromium/config/Chrome/mac/x64/libavcodec/parser_list.c
+@@ -2,6 +2,7 @@ static const AVCodecParser * const parser_list[] = {
+     &ff_aac_parser,
+     &ff_flac_parser,
+     &ff_h264_parser,
++    &ff_hevc_parser,
+     &ff_mpegaudio_parser,
+     &ff_opus_parser,
+     &ff_vorbis_parser,
+diff --git a/chromium/config/Chrome/mac/x64/libavformat/demuxer_list.c b/chromium/config/Chrome/mac/x64/libavformat/demuxer_list.c
+index 920b22bfa7..f5c1c39196 100644
+--- a/chromium/config/Chrome/mac/x64/libavformat/demuxer_list.c
++++ b/chromium/config/Chrome/mac/x64/libavformat/demuxer_list.c
+@@ -6,4 +6,5 @@ static const AVInputFormat * const demuxer_list[] = {
+     &ff_mp3_demuxer,
+     &ff_ogg_demuxer,
+     &ff_wav_demuxer,
++    &ff_hevc_demuxer,
+     NULL };
+diff --git a/chromium/config/Chrome/win/x64/config.asm b/chromium/config/Chrome/win/x64/config.asm
+index 09d0ad7fa0..ab67087531 100644
+--- a/chromium/config/Chrome/win/x64/config.asm
++++ b/chromium/config/Chrome/win/x64/config.asm
+@@ -808,7 +808,7 @@
+ %define CONFIG_H264_QSV_DECODER 0
+ %define CONFIG_H264_RKMPP_DECODER 0
+ %define CONFIG_HAP_DECODER 0
+-%define CONFIG_HEVC_DECODER 0
++%define CONFIG_HEVC_DECODER 1
+ %define CONFIG_HEVC_QSV_DECODER 0
+ %define CONFIG_HEVC_RKMPP_DECODER 0
+ %define CONFIG_HEVC_V4L2M2M_DECODER 0
+@@ -1563,7 +1563,7 @@
+ %define CONFIG_H261_PARSER 0
+ %define CONFIG_H263_PARSER 0
+ %define CONFIG_H264_PARSER 1
+-%define CONFIG_HEVC_PARSER 0
++%define CONFIG_HEVC_PARSER 1
+ %define CONFIG_JPEG2000_PARSER 0
+ %define CONFIG_MJPEG_PARSER 0
+ %define CONFIG_MLP_PARSER 0
+@@ -2183,7 +2183,7 @@
+ %define CONFIG_H264_DEMUXER 0
+ %define CONFIG_HCA_DEMUXER 0
+ %define CONFIG_HCOM_DEMUXER 0
+-%define CONFIG_HEVC_DEMUXER 0
++%define CONFIG_HEVC_DEMUXER 1
+ %define CONFIG_HLS_DEMUXER 0
+ %define CONFIG_HNM_DEMUXER 0
+ %define CONFIG_ICO_DEMUXER 0
+diff --git a/chromium/config/Chrome/win/x64/config.h b/chromium/config/Chrome/win/x64/config.h
+index c394f76cf7..1ccaeee1f4 100644
+--- a/chromium/config/Chrome/win/x64/config.h
++++ b/chromium/config/Chrome/win/x64/config.h
+@@ -823,7 +823,7 @@
+ #define CONFIG_H264_QSV_DECODER 0
+ #define CONFIG_H264_RKMPP_DECODER 0
+ #define CONFIG_HAP_DECODER 0
+-#define CONFIG_HEVC_DECODER 0
++#define CONFIG_HEVC_DECODER 1
+ #define CONFIG_HEVC_QSV_DECODER 0
+ #define CONFIG_HEVC_RKMPP_DECODER 0
+ #define CONFIG_HEVC_V4L2M2M_DECODER 0
+@@ -1578,7 +1578,7 @@
+ #define CONFIG_H261_PARSER 0
+ #define CONFIG_H263_PARSER 0
+ #define CONFIG_H264_PARSER 1
+-#define CONFIG_HEVC_PARSER 0
++#define CONFIG_HEVC_PARSER 1
+ #define CONFIG_JPEG2000_PARSER 0
+ #define CONFIG_MJPEG_PARSER 0
+ #define CONFIG_MLP_PARSER 0
+@@ -2198,7 +2198,7 @@
+ #define CONFIG_H264_DEMUXER 0
+ #define CONFIG_HCA_DEMUXER 0
+ #define CONFIG_HCOM_DEMUXER 0
+-#define CONFIG_HEVC_DEMUXER 0
++#define CONFIG_HEVC_DEMUXER 1
+ #define CONFIG_HLS_DEMUXER 0
+ #define CONFIG_HNM_DEMUXER 0
+ #define CONFIG_ICO_DEMUXER 0
+diff --git a/chromium/config/Chrome/win/x64/libavcodec/codec_list.c b/chromium/config/Chrome/win/x64/libavcodec/codec_list.c
+index 49f757b2d8..c16f588c2a 100644
+--- a/chromium/config/Chrome/win/x64/libavcodec/codec_list.c
++++ b/chromium/config/Chrome/win/x64/libavcodec/codec_list.c
+@@ -1,5 +1,6 @@
+ static const AVCodec * const codec_list[] = {
+     &ff_h264_decoder,
++    &ff_hevc_decoder,
+     &ff_theora_decoder,
+     &ff_vp3_decoder,
+     &ff_vp8_decoder,
+diff --git a/chromium/config/Chrome/win/x64/libavcodec/parser_list.c b/chromium/config/Chrome/win/x64/libavcodec/parser_list.c
+index 50acddb28e..192a64d7ab 100644
+--- a/chromium/config/Chrome/win/x64/libavcodec/parser_list.c
++++ b/chromium/config/Chrome/win/x64/libavcodec/parser_list.c
+@@ -2,6 +2,7 @@ static const AVCodecParser * const parser_list[] = {
+     &ff_aac_parser,
+     &ff_flac_parser,
+     &ff_h264_parser,
++    &ff_hevc_parser,
+     &ff_mpegaudio_parser,
+     &ff_opus_parser,
+     &ff_vorbis_parser,
+diff --git a/chromium/config/Chrome/win/x64/libavformat/demuxer_list.c b/chromium/config/Chrome/win/x64/libavformat/demuxer_list.c
+index 920b22bfa7..f5c1c39196 100644
+--- a/chromium/config/Chrome/win/x64/libavformat/demuxer_list.c
++++ b/chromium/config/Chrome/win/x64/libavformat/demuxer_list.c
+@@ -6,4 +6,5 @@ static const AVInputFormat * const demuxer_list[] = {
+     &ff_mp3_demuxer,
+     &ff_ogg_demuxer,
+     &ff_wav_demuxer,
++    &ff_hevc_demuxer,
+     NULL };
+diff --git a/ffmpeg_generated.gni b/ffmpeg_generated.gni
+index 9aab52870b..b8d4e75904 100644
+--- a/ffmpeg_generated.gni
++++ b/ffmpeg_generated.gni
+@@ -213,6 +213,36 @@ if ((is_mac) || (is_win) || (use_linux_config)) {
+     "libavcodec/vp8.c",
+     "libavcodec/vp8_parser.c",
+   ]
++
++  ffmpeg_c_sources += [
++    "libavcodec/bswapdsp.c",
++    "libavcodec/autorename_libavcodec_hevcdec.c",
++    "libavcodec/hevc_cabac.c",
++    "libavcodec/hevc_data.c",
++    "libavcodec/hevc_filter.c",
++    "libavcodec/hevc_mvs.c",
++    "libavcodec/hevc_parse.c",
++    "libavcodec/hevc_parser.c",
++    "libavcodec/hevc_ps.c",
++    "libavcodec/hevc_refs.c",
++    "libavcodec/hevc_sei.c",
++    "libavcodec/hevcdsp.c",
++    "libavcodec/hevcpred.c",
++    "libavcodec/x86/bswapdsp_init.c",
++    "libavcodec/x86/hevcdsp_init.c",
++    "libavformat/autorename_libavformat_hevc.c",
++    "libavformat/hevcdec.c",
++    "libavformat/avc.c",
++  ]
++  ffmpeg_asm_sources += [
++      "libavcodec/x86/bswapdsp.asm",
++      "libavcodec/x86/hevc_deblock.asm",
++      "libavcodec/x86/hevc_idct.asm",
++      "libavcodec/x86/hevc_mc.asm",
++      "libavcodec/x86/hevc_add_res.asm",
++      "libavcodec/x86/hevc_sao.asm",
++      "libavcodec/x86/hevc_sao_10bit.asm",
++  ]
+ }
+ 
+ if ((current_cpu == "arm64" && ffmpeg_branding == "Chrome") || (current_cpu == "x64" && ffmpeg_branding == "Chrome") || (is_android && current_cpu == "arm" && arm_use_neon && ffmpeg_branding == "Chrome") || (is_android && current_cpu == "mips64el" && ffmpeg_branding == "Chrome") || (is_android && current_cpu == "mipsel" && ffmpeg_branding == "Chrome") || (is_android && current_cpu == "x86" && ffmpeg_branding == "Chrome") || (is_mac && ffmpeg_branding == "Chrome") || (is_win && ffmpeg_branding == "Chrome") || (use_linux_config && ffmpeg_branding == "Chrome") || (use_linux_config && ffmpeg_branding == "ChromeOS")) {

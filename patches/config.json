@@ -3,7 +3,7 @@
 
   "src/electron/patches/boringssl": "src/third_party/boringssl/src",
 
-  "src/electron/patches/v8":  "src/v8",
+  "src/electron/patches/v8": "src/v8",
 
   "src/electron/patches/node": "src/third_party/electron_node",
 
@@ -16,7 +16,7 @@
   "src/electron/patches/sqlite": "src/third_party/sqlite/src",
 
   "src/electron/patches/icu": "src/third_party/icu",
-  
+
   "src/electron/patches/skia": "src/third_party/skia",
 
   "src/electron/patches/usrsctp": "src/third_party/usrsctp/usrsctplib",
@@ -25,5 +25,7 @@
 
   "src/electron/patches/webrtc": "src/third_party/webrtc",
 
-  "src/electron/patches/angle": "src/third_party/angle"
+  "src/electron/patches/angle": "src/third_party/angle",
+
+  "src/electron/patches/ffmpeg": "src/third_party/ffmpeg"
 }

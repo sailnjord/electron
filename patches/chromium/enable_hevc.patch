@@ -1,0 +1,56 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jonas Witt <mail@jonaswitt.com>
+Date: Fri Feb 18 19:27:36 2022 +0100
+Subject: enable_hevc.patch
+
+    enable hevc
+
+diff --git a/media/base/mime_util_internal.cc b/media/base/mime_util_internal.cc
+index 39d62476358b4..613fee113e5c0 100644
+--- a/media/base/mime_util_internal.cc
++++ b/media/base/mime_util_internal.cc
+@@ -915,6 +915,10 @@ SupportsType MimeUtil::IsCodecSupported(const std::string& mime_type_lower_case,
+       return IsNotSupported;
+   }
+ 
++  if (video_codec == kCodecHEVC) {
++    return IsSupported;
++  }
++
+   if (video_codec != kUnknownVideoCodec) {
+     if (!IsSupportedVideoType(
+             {video_codec, video_profile, video_level, color_space})) {
+diff --git a/media/base/supported_types.cc b/media/base/supported_types.cc
+index 2047bb52af449..f1c9c0be4ca55 100644
+--- a/media/base/supported_types.cc
++++ b/media/base/supported_types.cc
+@@ -312,6 +312,7 @@ bool IsDefaultSupportedVideoType(const VideoType& type) {
+       return IsColorSpaceSupported(type.color_space) &&
+              IsVp9ProfileSupported(type.profile);
+     case kCodecH264:
++    case kCodecHEVC:
+     case kCodecVP8:
+     case kCodecTheora:
+       return true;
+@@ -319,7 +320,6 @@ bool IsDefaultSupportedVideoType(const VideoType& type) {
+     case kUnknownVideoCodec:
+     case kCodecVC1:
+     case kCodecMPEG2:
+-    case kCodecHEVC:
+     case kCodecDolbyVision:
+       return false;
+ 
+diff --git a/media/media_options.gni b/media/media_options.gni
+index 81bcf0a451c23..92202636cd3ba 100644
+--- a/media/media_options.gni
++++ b/media/media_options.gni
+@@ -80,7 +80,8 @@ declare_args() {
+ 
+   # Enable HEVC/H265 demuxing. Actual decoding must be provided by the
+   # platform. Enabled by default for Chromecast.
+-  enable_platform_hevc = proprietary_codecs && is_chromecast
++  # enable_platform_hevc = proprietary_codecs && is_chromecast
++  enable_platform_hevc = true
+ 
+   # Enable Dolby Vision demuxing. Enable by default for Chromecast. Actual
+   # decoding must be provided by the platform. Note some Dolby Vision profiles
